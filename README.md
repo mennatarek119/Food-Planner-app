@@ -7,7 +7,7 @@ Room: Used for local data storage and management.
 Retrofit: Used for network requests and API integration.
 Glide: Used for image loading and caching.
 Firebase Authentication: Used for user authentication and login.
-Firebase Firestore: Used for cloud data storage and management.
+Firebase Firestore: Used for cloud data storage and management. 
 Lottie Animation: Used for high-quality vector animations.
 Navigation Component: Used for in-app navigation and routing.
 Kotlin
