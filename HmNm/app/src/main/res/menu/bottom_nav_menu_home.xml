@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_home"
+        android:title=""
+        app:itemIconTint="#104A36"
+    app:itemTextColor="#12372A" />
+
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_search"
+        android:title="" />
+
+    <item
+        android:id="@+id/AddToFav"
+        android:icon="@drawable/ic_fav"
+        android:title="" />
+
+    <item
+        android:id="@+id/calender"
+        android:icon="@drawable/ic_calendar"
+        android:title="" />
+
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/ic_person_foreground"
+        android:title="" />
+</menu>

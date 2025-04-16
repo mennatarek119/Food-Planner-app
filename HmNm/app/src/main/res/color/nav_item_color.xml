@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- لون الأيقونة عند التحديد -->
+    <item android:state_checked="true" android:color="#0F2027"/>
+    <!-- لون الأيقونة عند عدم التحديد -->
+    <item android:color="#777777"/>
+</selector>

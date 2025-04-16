@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">HmNm</string>
+
+    <string name="facebook_app_id">2035698466910945</string>
+    <string name="fb_login_protocol_scheme">fb2035698466910945</string>
+    <string name="facebook_client_token">b7eb97eec4fee22b894dea3e96d56296</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <dimen name="card_spacing">8dp</dimen>
+    <dimen name="normal_icon_size">24dp</dimen>
+    <dimen name="selected_icon_size">36dp</dimen>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    android:background="#0F2027">
+
+    <!-- صندوق البحث -->
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/categorySearchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:queryHint="Search Recipes"
+        app:iconifiedByDefault="false"
+        app:defaultQueryHint="Search Recipes"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        app:queryBackground="@null"
+        android:background="@drawable/search_background"
+        android:iconifiedByDefault="false"
+        android:textColorHint="#B0BEC5"
+        app:iconTint="#B0BEC5"
+        android:theme="@style/WhiteSearchViewTheme"
+        />
+
+    <!-- قائمة المكونات -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/categoryRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"/>
+</LinearLayout>
