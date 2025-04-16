@@ -27,6 +27,12 @@ Features
 - Detailed Meal Information: Shows detailed information about each meal, including ingredients and nutritional information.
  
   LinkedIn: https://www.linkedin.com/in/menna-tarek-052473278/
+
+  ![Picsart_25-04-16_21-40-44-441](https://github.com/user-attachments/assets/dc7cc76a-f1c8-4e17-829d-4363c5bd3a09)
+
 ![Picsart_25-04-16_21-43-22-337](https://github.com/user-attachments/assets/9a5866b6-9f13-4673-a71a-703e5f9f82ce)
+
+![Picsart_25-04-16_21-43-59-337](https://github.com/user-attachments/assets/5d29dd76-e09c-468f-86ad-62c80b911604)
+
 
 
