@@ -12,6 +12,8 @@ Used Tools
 - Navigation Component: Used for in-app navigation and routing.
 - Kotlin
 - Used API: https://www.themealdb.com/api.php
+  
+Features
 
 - Daily Inspiration Meal: Shows a daily meal suggestion on the home screen.
 - Meals by Country: Allows users to browse meals by country.
