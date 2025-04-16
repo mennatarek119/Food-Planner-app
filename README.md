@@ -13,7 +13,7 @@ Used Tools
 - Kotlin
 - Used API: https://www.themealdb.com/api.php
 
-Daily Inspiration Meal: Shows a daily meal suggestion on the home screen.
+- Daily Inspiration Meal: Shows a daily meal suggestion on the home screen.
 - Meals by Country: Allows users to browse meals by country.
 - Meals by Category: Allows users to browse meals by category.
 - Meals by Ingredient: Allows users to search for meals by ingredient.
@@ -23,4 +23,5 @@ Daily Inspiration Meal: Shows a daily meal suggestion on the home screen.
 - Save to Mobile Calendar: Allows users to save meal plans to their mobile calendar as reminders.
 - Video Tutorials: Provides video tutorials to teach users how to cook meals.
 - Detailed Meal Information: Shows detailed information about each meal, including ingredients and nutritional information.
-LinkedIn: https://www.linkedin.com/in/menna-tarek-052473278/
+ 
+  LinkedIn: https://www.linkedin.com/in/menna-tarek-052473278/
