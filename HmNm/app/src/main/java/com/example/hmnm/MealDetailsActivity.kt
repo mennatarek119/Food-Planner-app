@@ -41,13 +41,11 @@ class MealDetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_meal_details)
         supportActionBar?.hide()
 
-        // استقبال ID الوجبة
         val mealId = intent.getStringExtra("MEAL_ID") ?: return
         val prepTime = intent.getIntExtra("MEAL_PREP_TIME", -1)
         val rating = intent.getFloatExtra("MEAL_RATING", -1.0f)
 
 
-        // ربط العناصر بالتصميم
         mealImageView = findViewById(R.id.mealImageView)
         mealNameTextView = findViewById(R.id.mealNameTextView)
         mealAreaTextView = findViewById(R.id.mealAreaTextView)
@@ -127,12 +125,11 @@ class MealDetailsActivity : AppCompatActivity() {
 
         val ingredientsList = getIngredientsList(meal)
 
-        // تمرير دالة عند الضغط على عنصر المكون
         val ingredientsAdapter = IngredientsAdapter(ingredientsList) { ingredientName ->
             val intent = Intent(this, MealsActivity::class.java).apply {
                 putExtra("NAME", ingredientName)
-                putExtra("IS_CATEGORY", false)   // لتحديد أن المصدر ليس تصنيفًا
-                putExtra("IS_INGREDIENT", true)  // تحديد أن البحث يتم حسب المكون
+                putExtra("IS_CATEGORY", false)   
+                putExtra("IS_INGREDIENT", true)  
             }
             startActivity(intent)
         }
@@ -158,7 +155,6 @@ class MealDetailsActivity : AppCompatActivity() {
         }
     }
 
-    // دالة لاستخراج ID الفيديو من رابط YouTube
     private fun getYouTubeVideoId(url: String): String {
         val pattern = "https?://(?:www\\.)?youtube\\.com/watch\\?v=([\\w-]+)"
         val regex = Regex(pattern)
