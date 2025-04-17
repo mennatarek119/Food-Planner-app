@@ -19,7 +19,6 @@ class AllMealsAdapter(
     private val onViewClick: (Meal) -> Unit
 ) : RecyclerView.Adapter<AllMealsAdapter.MealViewHolder>() {
 
-    // HashMaps لتخزين القيم العشوائية بناءً على ID الوجبة
     private val prepTimeMap = mutableMapOf<String, Int>()
     private val ratingMap = mutableMapOf<String, Float>()
 
