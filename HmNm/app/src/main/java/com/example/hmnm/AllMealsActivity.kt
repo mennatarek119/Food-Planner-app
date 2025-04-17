@@ -87,7 +87,7 @@ class AllMealsActivity : AppCompatActivity() {
     }
 
     private fun handleFavoriteClick(mealPlan: MealPlan) {
-        // منطق المفضلة هنا إذا لزم الأمر
+       
     }
 
     private fun fetchAllMeals() {
@@ -113,8 +113,8 @@ class AllMealsActivity : AppCompatActivity() {
     private fun handleMealView(meal: Meal) {
         val intent = Intent(this, MealDetailsActivity::class.java).apply {
             putExtra("MEAL_ID", meal.idMeal)
-            putExtra("MEAL_RATING", 3.5f) // حطي تقييم مبدئي أو حسب ما متوفر
-            putExtra("MEAL_PREP_TIME", 30) // وقت تحضير مبدئي
+            putExtra("MEAL_RATING", 3.5f) 
+            putExtra("MEAL_PREP_TIME", 30)
         }
         startActivity(intent)
     }
@@ -140,10 +140,8 @@ class AllMealsActivity : AppCompatActivity() {
 
     private fun handleBookmarkClick(meal: Meal) {
         lifecycleScope.launch {
-            // الحصول على userId الحالي من FirebaseAuth
             val userId = FirebaseAuth.getInstance().currentUser?.uid
             if (userId == null) {
-                // إذا لم يكن هناك userId، يظهر رسالة خطأ
                 Toast.makeText(this@AllMealsActivity, "لم يتم العثور على المستخدم", Toast.LENGTH_SHORT).show()
                 return@launch
             }
@@ -173,14 +171,12 @@ class AllMealsActivity : AppCompatActivity() {
             .collection("meals")
             .document(favoriteMeal.idMeal)
 
-        // بناء الخريطة يدويًا
         val mealMap = hashMapOf(
             "idMeal" to favoriteMeal.idMeal,
             "strMeal" to favoriteMeal.strMeal,
             "strMealThumb" to favoriteMeal.strMealThumb,
         )
 
-        // إرسال البيانات إلى Firebase
         favoriteMealRef.set(mealMap)
     }
 
@@ -198,7 +194,7 @@ class AllMealsActivity : AppCompatActivity() {
 
     fun getCurrentUserId(): String {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
-        return firebaseUser?.uid ?: "" // إرجاع userId إذا كان موجودًا، وإلا إرجاع قيمة فارغة
+        return firebaseUser?.uid ?: "" 
     }
 
     private fun handleMealAddition(meal: Meal) {
@@ -214,7 +210,6 @@ class AllMealsActivity : AppCompatActivity() {
                 )
                 database.mealPlanDao().insertMeal(mealPlan)
 
-                // إضافة الوجبة إلى Firebase
                 val mealPlanRef = FirebaseFirestore.getInstance()
                     .collection("mealPlans")
                     .document(userId)
@@ -227,10 +222,9 @@ class AllMealsActivity : AppCompatActivity() {
                     "mealThumb" to meal.strMealThumb,
                     "day" to day,
                 )
-                Log.d("MealPlans", "MealMap: $mealMap") // تحقق من القيم قبل الإرسال
+                Log.d("MealPlans", "MealMap: $mealMap") 
                 mealPlanRef.set(mealMap)
 
-                // تحميل بيانات الوجبات المخصصة لهذا اليوم
                 val mealPlans = database.mealPlanDao().getMealsForDay(day)
                 mealPlansList.clear()
                 mealPlansList.addAll(mealPlans)
