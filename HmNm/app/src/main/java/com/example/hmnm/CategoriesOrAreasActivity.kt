@@ -39,7 +39,7 @@ class CategoriesOrAreasActivity : AppCompatActivity() {
     private var allCategories: List<Category> = emptyList()
     private var allCountries: List<Area> = emptyList()
     private var isShowingMeals = false
-    private var currentType: String = TYPE_CATEGORY  // الافتراضي هو عرض الفئات
+    private var currentType: String = TYPE_CATEGORY  
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +56,6 @@ class CategoriesOrAreasActivity : AppCompatActivity() {
         mealsAdapter = MealsAdapter(emptyList(), this)
 
 
-        // التحقق من نوع البيانات المعروضة
         currentType = intent.getStringExtra(EXTRA_TYPE) ?: TYPE_CATEGORY
 
         if (currentType == TYPE_CATEGORY) {
@@ -131,7 +130,7 @@ class CategoriesOrAreasActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrEmpty()) {
-                    filterItems(query) // ✅ البحث فقط عند إدخال الكلمة الكاملة والضغط على Enter
+                    filterItems(query) 
                 } else {
                     resetToDefaultList()
                 }
@@ -140,7 +139,7 @@ class CategoriesOrAreasActivity : AppCompatActivity() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (!newText.isNullOrEmpty()) {
-                    showSuggestions(newText) // ✅ عرض الاقتراحات أثناء الكتابة
+                    showSuggestions(newText) 
                 } else {
                     resetToDefaultList()
                 }
@@ -161,14 +160,14 @@ class CategoriesOrAreasActivity : AppCompatActivity() {
             if (currentType == TYPE_CATEGORY) {
                 val filteredCategories = allCategories.filter { it.strCategory.contains(query, ignoreCase = true) }
                 if (filteredCategories.isNotEmpty()) {
-                    recyclerView.layoutManager = GridLayoutManager(this, 2) // ✅ عرض في ٢ عمود
+                    recyclerView.layoutManager = GridLayoutManager(this, 2) 
                     categoriesAdapter.updateItems(filteredCategories)
                     recyclerView.adapter = categoriesAdapter
                 }
             } else {
                 val filteredCountries = allCountries.filter { it.strArea.contains(query, ignoreCase = true) }
                 if (filteredCountries.isNotEmpty()) {
-                    recyclerView.layoutManager = GridLayoutManager(this, 2) // ✅ عرض في ٢ عمود
+                    recyclerView.layoutManager = GridLayoutManager(this, 2) 
                     val formattedCountries = filteredCountries.map { Pair(it.strArea, getFlagResId(it.strArea)) }
                     countriesAdapter.updateItems(formattedCountries)
                     recyclerView.adapter = countriesAdapter
@@ -196,7 +195,7 @@ class CategoriesOrAreasActivity : AppCompatActivity() {
     private fun filterItems(query: String?) {
         if (!query.isNullOrEmpty()) {
             if (currentType == TYPE_CATEGORY) {
-                // البحث عن تطابق تام فقط
+                
                 val selectedCategory = allCategories.find { it.strCategory.equals(query, ignoreCase = true) }
 
                 if (selectedCategory != null) {
@@ -206,7 +205,6 @@ class CategoriesOrAreasActivity : AppCompatActivity() {
                     Toast.makeText(this, "No matching categories found!", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                // البحث عن تطابق تام فقط
                 val selectedCountry = allCountries.find { it.strArea.equals(query, ignoreCase = true) }
 
                 if (selectedCountry != null) {
@@ -238,7 +236,7 @@ class CategoriesOrAreasActivity : AppCompatActivity() {
             val response = withContext(Dispatchers.IO) {
                 ApiClient.retrofitService.getMealsByCategory(category)
             }
-            val mealsList = response.meals ?: emptyList() // ✅ التأكد من عدم وجود Null
+            val mealsList = response.meals ?: emptyList() 
 
             if (mealsList.isNotEmpty()) {
                 val mealsWithIngredients = mealsList.map { meal ->
@@ -249,7 +247,7 @@ class CategoriesOrAreasActivity : AppCompatActivity() {
                 }
 
                 recyclerView.adapter = mealsAdapter
-                mealsAdapter.updateItems(mealsWithIngredients) // ✅ الآن تم تعريفها بشكل صحيح
+                mealsAdapter.updateItems(mealsWithIngredients) 
             } else {
                 Toast.makeText(this@CategoriesOrAreasActivity, "No meals found!", Toast.LENGTH_SHORT).show()
             }} catch (e: Exception) {
@@ -295,11 +293,5 @@ class CategoriesOrAreasActivity : AppCompatActivity() {
         return ingredients.count { !it.isNullOrEmpty() }
     }
 
-//    private fun saveToFavorites(meal: Meal) {
-//        val favorite = FavoriteMeal(meal.idMeal,meal.strMeal,meal.strMealThumb)
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val db = AppDatabase.getDatabase(this@CategoriesOrAreasActivity)
-//            db.favoriteDao().addFavorite(favorite)
-//        }
-//    }
+
 }
