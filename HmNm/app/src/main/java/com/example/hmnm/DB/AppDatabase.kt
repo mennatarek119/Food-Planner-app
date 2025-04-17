@@ -27,20 +27,17 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app_database"
-                ) .addMigrations(MIGRATION_2_3) // إضافة مسار الهجرة
+                ) .addMigrations(MIGRATION_2_3) 
                     .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance
             }
         }
-        // تعريف مسار الهجرة من 2 إلى 3
         val MIGRATION_2_3 = object : Migration(4, 5) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // إذا كان الجدول meal_plan غير موجود، يمكننا إنشاءه هنا
                 database.execSQL("CREATE TABLE IF NOT EXISTS `meal_plan` (`id` INTEGER PRIMARY KEY NOT NULL, `mealId` TEXT NOT NULL, `mealName` TEXT NOT NULL, `mealThumb` TEXT NOT NULL, `day` TEXT NOT NULL,`isFavorite` INTEGER NOT NULL DEFAULT 0)")
 
-                // تأكد من إضافة أي أعمدة جديدة إذا كنت قد قمت بتحديث الهيكل
             }
         }
 
