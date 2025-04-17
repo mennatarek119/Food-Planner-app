@@ -71,7 +71,6 @@ class MealsAdapter(
 
             addIngredientsButton.text = "${meal.ingredientCount} Ingredients"
 
-            // ✅ **التحقق من قاعدة البيانات لمعرفة حالة الوجبة في المفضلة**
             CoroutineScope(Dispatchers.IO).launch {
                 val db = AppDatabase.getDatabase(context)
                 val favoriteDao = db.favoriteDao()
@@ -83,14 +82,11 @@ class MealsAdapter(
                 }
             }
 
-            // ✅ **عند الضغط على الأيقونة، يتم الإضافة أو الحذف من قاعدة البيانات*
 
             bookmarkIcon.setOnClickListener {
                 if (meal.isFavorite) {
-                    // عرض نافذة تأكيد إذا كانت الوجبة مفضلة بالفعل
                     val builder = android.app.AlertDialog.Builder(context)
 
-                    // تخصيص النص باستخدام SpannableString لتغيير اللون
                     val titleText = SpannableString("Remove favorite")
                     titleText.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.teal_700)), 0, titleText.length, 0)
                     builder.setTitle(titleText)
@@ -100,16 +96,14 @@ class MealsAdapter(
                     builder.setMessage(messageText)
 
                     builder.setPositiveButton("Yes") { _, _ ->
-                        // إذا وافق المستخدم، يتم إزالة الوجبة من المفضلة
+            
                         saveToFavorites(meal)
                     }
 
                     builder.setNegativeButton("Cancel", null)
 
-                    // تخصيص ألوان الأزرار في النافذة
                     val alertDialog = builder.create()
 
-                    // بعد عرض النافذة، نحدث الأزرار
                     alertDialog.setOnShowListener {
                         alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)?.let {
                             it.setTextColor(ContextCompat.getColor(context, R.color.red))
@@ -119,9 +113,8 @@ class MealsAdapter(
                         }
                     }
 
-                    alertDialog.show() // تأكد من استدعاء show() بعد تخصيص الأزرار
+                    alertDialog.show() 
                 } else {
-                    // إضافة الوجبة إلى المفضلة مباشرة إذا لم تكن مفضلة
                     saveToFavorites(meal)
                 }
             }
@@ -160,7 +153,6 @@ class MealsAdapter(
                 val existingFavorite = favoriteDao.getFavoriteByIdAndUser(meal.idMeal, userId)
 
                 if (existingFavorite == null) {
-                    // ✅ إضافة للمفضلة في قاعدة البيانات المحلية
                     val favorite = FavoriteMeal(
                         idMeal = meal.idMeal,
                         strMeal = meal.strMeal,
@@ -170,7 +162,6 @@ class MealsAdapter(
                     favoriteDao.addFavorite(favorite)
                     meal.isFavorite = true
 
-                    // ✅ إضافة للمفضلة في Firestore
                     val firestoreDb = FirebaseFirestore.getInstance()
                     firestoreDb.collection("favorites")
                         .document(userId)
@@ -179,7 +170,7 @@ class MealsAdapter(
                         .set(favorite)
                         .addOnSuccessListener {
                             CoroutineScope(Dispatchers.Main).launch {
-                                updateBookmarkIcon(meal) // تحديث الأيقونة
+                                updateBookmarkIcon(meal) 
                             }
                         }
                         .addOnFailureListener { e ->
@@ -188,11 +179,9 @@ class MealsAdapter(
                             }
                         }
                 } else {
-                    // ❌ إزالة من المفضلة في قاعدة البيانات المحلية
                     favoriteDao.deleteFavorite(existingFavorite)
                     meal.isFavorite = false
 
-                    // ❌ إزالة من المفضلة في Firestore
                     val firestoreDb = FirebaseFirestore.getInstance()
                     firestoreDb.collection("favorites")
                         .document(userId)
@@ -201,7 +190,7 @@ class MealsAdapter(
                         .delete()
                         .addOnSuccessListener {
                             CoroutineScope(Dispatchers.Main).launch {
-                                updateBookmarkIcon(meal) // تحديث الأيقونة
+                                updateBookmarkIcon(meal) 
                             }
                         }
                         .addOnFailureListener { e ->
@@ -218,9 +207,9 @@ class MealsAdapter(
 
         private fun updateBookmarkIcon(meal: Meal) {
             if (meal.isFavorite) {
-                bookmarkIcon.setImageResource(R.drawable.ic_bookmarked_foreground) // ✅ أيقونة محفوطة
+                bookmarkIcon.setImageResource(R.drawable.ic_bookmarked_foreground) 
             } else {
-                bookmarkIcon.setImageResource(R.drawable.ic_bookmark) // ❌ أيقونة غير محفوظة (border)
+                bookmarkIcon.setImageResource(R.drawable.ic_bookmark) 
             }
         }
 
