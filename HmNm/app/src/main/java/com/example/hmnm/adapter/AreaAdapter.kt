@@ -10,7 +10,7 @@ import com.example.hmnm.R
 
 class AreaAdapter(
     private var items: List<Pair<String, Int>>,
-    private val onItemClick: (String) -> Unit // إضافة دالة الــ click هنا
+    private val onItemClick: (String) -> Unit 
 ) : RecyclerView.Adapter<AreaAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -35,11 +35,10 @@ class AreaAdapter(
 
         fun bind(item: Pair<String, Int>) {
             areaNameTextView.text = item.first
-            flagImageView.setImageResource(item.second)  // عرض صورة العلم
+            flagImageView.setImageResource(item.second) 
 
-            // إضافة مستمع للـ click
             itemView.setOnClickListener {
-                onItemClick(item.first) // إرسال اسم المنطقة عند الضغط
+                onItemClick(item.first) 
             }
         }
     }
