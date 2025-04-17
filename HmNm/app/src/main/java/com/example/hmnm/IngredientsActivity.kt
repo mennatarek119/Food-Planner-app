@@ -83,21 +83,21 @@ class IngredientsActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrEmpty()) {
-                    filterIngredients(query) // ✅ يتم البحث فقط عند الضغط على زر البحث
+                    filterIngredients(query) 
                 } else {
-                    resetToIngredientsList() // ✅ إعادة القائمة الأصلية إذا لم يُكتب شيء
+                    resetToIngredientsList() 
                 }
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                showSuggestions(newText) // ✅ أثناء الكتابة، يتم عرض الاقتراحات
+                showSuggestions(newText) 
                 return false
             }
         })
 
         searchView.setOnCloseListener {
-            resetToIngredientsList() // 🔄 عند الضغط على زر الـ ❌ يتم استرجاع القائمة الأصلية
+            resetToIngredientsList() 
             false
         }
 
@@ -111,12 +111,12 @@ class IngredientsActivity : AppCompatActivity() {
             val filteredSuggestions = allIngredients.filter { it.first.contains(query, ignoreCase = true) }
 
             if (filteredSuggestions.isNotEmpty()) {
-                recyclerView.layoutManager = GridLayoutManager(this, 3) // ✅ عمودين بدل ٣ عند البحث
+                recyclerView.layoutManager = GridLayoutManager(this, 3) 
                 recyclerView.adapter = ingredientsAdapter
                 ingredientsAdapter.updateItems(filteredSuggestions)
             }
         } else {
-            resetToIngredientsList() // 🔄 إذا لم يُكتب شيء، اعرض القائمة الأصلية بثلاثة أعمدة
+            resetToIngredientsList() 
         }
     }
 
@@ -132,7 +132,7 @@ class IngredientsActivity : AppCompatActivity() {
 
     private fun filterIngredients(query: String?) {
         if (!query.isNullOrEmpty()) {
-            val exactMatch = allIngredients.find { it.first.equals(query, ignoreCase = true) } // ✅ البحث عن تطابق تام فقط
+            val exactMatch = allIngredients.find { it.first.equals(query, ignoreCase = true) }
 
             if (exactMatch != null) {
                 Log.d("Search", "Using exact ingredient for search: ${exactMatch.first}")
@@ -154,7 +154,7 @@ class IngredientsActivity : AppCompatActivity() {
     private fun loadMealsByIngredient(ingredient: String) {
         lifecycleScope.launch {
             try {
-                Log.d("API", "Fetching meals for: $ingredient") // ✅ تأكيد أن البحث يتم بالاسم الصحيح
+                Log.d("API", "Fetching meals for: $ingredient") 
 
                 val response = withContext(Dispatchers.IO) {
                     ApiClient.retrofitService.getMealsByIngredient(ingredient)
@@ -199,11 +199,4 @@ class IngredientsActivity : AppCompatActivity() {
         return ingredients.count { !it.isNullOrEmpty() }
     }
 
-//    private fun saveToFavorites(meal: Meal) {
-//        val favorite = FavoriteMeal(meal.idMeal,meal.strMeal,meal.strMealThumb)
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val db = AppDatabase.getDatabase(this@IngredientsActivity)
-//            db.favoriteDao().addFavorite(favorite)
-//        }
-//    }
 }
