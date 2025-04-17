@@ -31,28 +31,24 @@ class MealsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.items_recipe)
 
-        // *تهيئة العناصر*
         mealsRecyclerView = findViewById(R.id.ReciperecyclerView)
         loadingProgressBar = findViewById(R.id.progressBar)
 
-        // *تحديد تخطيط RecyclerView*
         mealsRecyclerView.layoutManager = GridLayoutManager(this, 2)
         mealsAdapter = MealsAdapter(emptyList(), this)
 
         mealsRecyclerView.adapter = mealsAdapter
 
-        // *استقبال البيانات من الـ Intent*
         categoryOrIngredientName = intent.getStringExtra("NAME") ?: return
         isCategory = intent.getBooleanExtra("IS_CATEGORY", true)
         isIngredient = intent.getBooleanExtra("IS_INGREDIENT", false)
-        isArea = intent.getBooleanExtra("IS_AREA", true) // ✅ استقبال متغير الدولة
+        isArea = intent.getBooleanExtra("IS_AREA", true) 
 
 
 
-        title = categoryOrIngredientName  // *تحديد عنوان الصفحة*
+        title = categoryOrIngredientName  
 
 
-        // *تحميل الوجبات بناءً على المصدر*
         loadMeals()
     }
 
@@ -66,7 +62,7 @@ class MealsActivity : AppCompatActivity() {
                     when {
                         isCategory -> ApiClient.retrofitService.getMealsByCategory(categoryOrIngredientName)
                         isIngredient -> ApiClient.retrofitService.getMealsByIngredient(categoryOrIngredientName)
-                        isArea -> ApiClient.retrofitService.getMealsByArea(categoryOrIngredientName) // ✅ جلب الوجبات حسب الدولة
+                        isArea -> ApiClient.retrofitService.getMealsByArea(categoryOrIngredientName) 
                         else -> null
                     }
                 }
