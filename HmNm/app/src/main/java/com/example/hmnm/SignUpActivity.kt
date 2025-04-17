@@ -13,7 +13,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class SignUpActivity : AppCompatActivity() {
 
-    // Firebase Auth instance
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
@@ -22,18 +21,15 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(R.layout.signup)
         supportActionBar?.hide()
 
-        // Initialize Firebase Auth and Firestore
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        // References to UI elements
         val displayNameEditText = findViewById<TextInputEditText>(R.id.etDisplayName)
         val emailEditText = findViewById<TextInputEditText>(R.id.etEmail)
         val passwordEditText = findViewById<TextInputEditText>(R.id.etPassword)
         val confirmPasswordEditText = findViewById<TextInputEditText>(R.id.etConfirmPassword)
         val signUpButton = findViewById<Button>(R.id.btnNext)
 
-        // Sign up button click listener
         signUpButton.setOnClickListener {
             val displayName = displayNameEditText.text.toString().trim()
             val email = emailEditText.text.toString().trim()
@@ -54,12 +50,10 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    // Function to sign up user
     private fun signUpUser(displayName: String, email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Add display name to user profile
                     val user = auth.currentUser
                     val profileUpdates = UserProfileChangeRequest.Builder()
                         .setDisplayName(displayName)
@@ -67,7 +61,6 @@ class SignUpActivity : AppCompatActivity() {
 
                     user?.updateProfile(profileUpdates)?.addOnCompleteListener { profileTask ->
                         if (profileTask.isSuccessful) {
-                            // After profile is updated, store user data in Firestore
                             storeUserDataInFirestore(user)
 
                             Toast.makeText(this, "Sign up successful!", Toast.LENGTH_SHORT).show()
@@ -82,24 +75,20 @@ class SignUpActivity : AppCompatActivity() {
             }
     }
 
-    // Function to store user data in Firestore
-    // Function to store user data in Firestore including favorite meals
     private fun storeUserDataInFirestore(user: FirebaseUser?) {
         user?.let {
             val userId = it.uid
             val displayName = it.displayName
             val email = it.email
 
-            // Create a map of user data to store in Firestore
             val userData = hashMapOf(
                 "userId" to userId,
                 "displayName" to displayName,
                 "email" to email,
             )
 
-            // Add user data to Firestore under the "users" collection
             db.collection("users")
-                .document(userId)  // Use the userId as the document ID
+                .document(userId)  
                 .set(userData)
                 .addOnSuccessListener {
                     Log.d("Firestore", "User data stored successfully")
