@@ -30,11 +30,11 @@ class SearchFragment : Fragment() {
     private lateinit var ingredientsRecyclerView: RecyclerView
     private lateinit var mealsRecyclerView: RecyclerView
     private lateinit var categoriesRecyclerView: RecyclerView
-    private lateinit var countryRecyclerView: RecyclerView  // ✅ RecyclerView للدول
+    private lateinit var countryRecyclerView: RecyclerView  
 
     private lateinit var ingredientsAdapter: IngredientsAdapter
     private lateinit var categoriesAdapter: CategoryAdapter
-    private lateinit var countryAdapter: AreaAdapter  // ✅ استخدام AreaAdapter للدول
+    private lateinit var countryAdapter: AreaAdapter  
     private lateinit var mealAdapter: MealsAdapter
 
     private lateinit var viewAllButtonIngredients: Button
@@ -47,7 +47,6 @@ class SearchFragment : Fragment() {
     ): View {
         val rootView = inflater.inflate(R.layout.fragment_search, container, false)
 
-        // **تجهيز RecyclerView للمكونات**
         ingredientsRecyclerView = rootView.findViewById(R.id.ingredientRecyclerView)
         ingredientsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         ingredientsAdapter = IngredientsAdapter(emptyList()) { ingredientName ->
@@ -55,7 +54,6 @@ class SearchFragment : Fragment() {
         }
         ingredientsRecyclerView.adapter = ingredientsAdapter
 
-        // **تجهيز RecyclerView للفئات**
         categoriesRecyclerView = rootView.findViewById(R.id.categoryRecyclerView)
         categoriesRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         categoriesAdapter = CategoryAdapter(emptyList()) { categoryName ->
@@ -63,26 +61,22 @@ class SearchFragment : Fragment() {
         }
         categoriesRecyclerView.adapter = categoriesAdapter
 
-        // **تجهيز RecyclerView للوصفات العشوائية**
         mealsRecyclerView = rootView.findViewById(R.id.mealRecyclerview)
         mealsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         mealAdapter = MealsAdapter(emptyList(),requireContext())
         mealsRecyclerView.adapter = mealAdapter
 
-        // **تجهيز RecyclerView للدول**
         countryRecyclerView = rootView.findViewById(R.id.countryRecyclerView)
         countryRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         countryAdapter = AreaAdapter(emptyList()) { countryName ->
-            openMealsActivity(countryName, isCategory = false, isArea = true) // ✅ تحديد أن الدولة هي المصدر
+            openMealsActivity(countryName, isCategory = false, isArea = true) 
         }
 
         countryRecyclerView.adapter = countryAdapter
 
-        // **تجهيز زر "VIEW ALL" للمكونات**
         viewAllButtonIngredients = rootView.findViewById(R.id.viewAllButtonIngredients)
 
-        // إنشاء SpannableString وإضافة UnderlineSpan
         val content = SpannableString("VIEW ALL")
         content.setSpan(UnderlineSpan(), 0, content.length, 0)
         viewAllButtonIngredients.text = content
@@ -90,21 +84,18 @@ class SearchFragment : Fragment() {
             openIngredientsActivity()
         }
 
-        // **تجهيز زر "VIEW ALL" للفئات**
         viewAllButtonCategories = rootView.findViewById(R.id.viewAllButtonCategories)
         viewAllButtonCategories.text = content
         viewAllButtonCategories.setOnClickListener {
             openCategoriesActivity(CategoriesOrAreasActivity.TYPE_CATEGORY)
         }
 
-        // **تجهيز زر "VIEW ALL" للدول**
         viewAllButtonCountries = rootView.findViewById(R.id.viewAllButtonCountry)
         viewAllButtonCountries.text = content
         viewAllButtonCountries.setOnClickListener {
             openCategoriesActivity(CategoriesOrAreasActivity.TYPE_COUNTRY)
         }
 
-        // **تحميل البيانات**
         loadIngredients()
         loadCategories()
         loadCountries()
@@ -155,7 +146,7 @@ class SearchFragment : Fragment() {
                     if (flagResId != 0) Pair(it.strArea, flagResId) else null
                 }
 
-                countryAdapter.updateItems(countryList)  // ✅ تحديث الـ Adapter بالدول
+                countryAdapter.updateItems(countryList)  
                 countryRecyclerView.visibility = View.VISIBLE
 
             } catch (e: Exception) {
@@ -213,8 +204,8 @@ class SearchFragment : Fragment() {
         val intent = Intent(requireContext(), MealsActivity::class.java)
         intent.putExtra("NAME", name)
         intent.putExtra("IS_CATEGORY", isCategory)
-        intent.putExtra("IS_INGREDIENT", !isCategory && !isArea) // ✅ التأكد من عدم كونه مكون أو تصنيف
-        intent.putExtra("IS_AREA", isArea) // ✅ إضافة متغير جديد للدولة
+        intent.putExtra("IS_INGREDIENT", !isCategory && !isArea) 
+        intent.putExtra("IS_AREA", isArea)
         startActivity(intent)
     }
 
