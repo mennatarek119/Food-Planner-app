@@ -16,30 +16,26 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var passwordInput: TextInputEditText
     private lateinit var checkBoxRemember: CheckBox
     private lateinit var btnLogin: Button
-    private lateinit var auth: FirebaseAuth  // إضافة FirebaseAuth
+    private lateinit var auth: FirebaseAuth  
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
         supportActionBar?.hide()
 
-        // ربط العناصر بملفات XML
         emailInput = findViewById(R.id.emailInput)
         passwordInput = findViewById(R.id.passwordInput)
         checkBoxRemember = findViewById(R.id.checkBoxRemember)
         btnLogin = findViewById(R.id.btnLogin)
 
 
-        // Firebase Authentication
         auth = FirebaseAuth.getInstance()
 
-        // استرجاع البيانات من SharedPreferences
         val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val savedEmail = sharedPreferences.getString("email", "")
         val savedPassword = sharedPreferences.getString("password", "")
         val rememberMe = sharedPreferences.getBoolean("rememberMe", false)
 
-        // تعبئة الحقول تلقائيًا
         emailInput.setText(savedEmail)
         passwordInput.setText(savedPassword)
         checkBoxRemember.isChecked = rememberMe
@@ -93,10 +89,9 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    SharedPrefManager.setLoggedIn(this, true) // حفظ الحالة
-                    val userId = auth.currentUser?.uid // جلب ال userId
+                    SharedPrefManager.setLoggedIn(this, true) 
+                    val userId = auth.currentUser?.uid 
                     if (userId != null) {
-                        // يمكنك استخدام userId هنا لتخزينه في قاعدة البيانات أو استخدامه كما تريد
                         println("User ID: $userId")
                     }
 
