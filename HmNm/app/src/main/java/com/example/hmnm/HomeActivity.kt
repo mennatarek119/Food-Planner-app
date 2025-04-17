@@ -17,7 +17,7 @@ class HomeActivity : AppCompatActivity() {
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
-        loadFragment(HomeFragment()) // افتراضيًا، افتح HomeFragment
+        loadFragment(HomeFragment()) 
 
         bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
