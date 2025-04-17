@@ -48,7 +48,6 @@ class HomeFragment : Fragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_home, container, false)
 
-        // تهيئة RecyclerView الخاص بالـ Areas
         areasRecyclerView = rootView.findViewById(R.id.mealsRecyclerView2)
         areasRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         areasAdapter = AreaAdapter(emptyList()) { areaName ->
@@ -60,7 +59,6 @@ class HomeFragment : Fragment() {
         }
         areasRecyclerView.adapter = areasAdapter
 
-        // تهيئة RecyclerView الخاص بالـ Categories
         categoriesRecyclerView = rootView.findViewById(R.id.mealsRecyclerView)
         categoriesRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         categoriesAdapter = CategoryAdapter(emptyList()) { categoryName ->
@@ -72,7 +70,6 @@ class HomeFragment : Fragment() {
         }
         categoriesRecyclerView.adapter = categoriesAdapter
 
-        // تهيئة الوجبة العشوائية
         randomMealImageView = rootView.findViewById(R.id.randomMealImageView)
         randomMealNameTextView = rootView.findViewById(R.id.randomMealNameTextView)
         ingredints = rootView.findViewById(R.id.ingredints)
@@ -85,7 +82,6 @@ class HomeFragment : Fragment() {
         favoriteMealDao = database.favoriteDao()
 
 
-        // تحميل البيانات
         loadAreas()
         loadCategories()
         loadRandomMeal()
@@ -135,19 +131,16 @@ class HomeFragment : Fragment() {
                 if (meals.isNotEmpty()) {
                     val randomMeal = meals[0]
 
-                    // ✅ تعيين اسم وصورة الوجبة
                     randomMealNameTextView.text = randomMeal.strMeal
                     Glide.with(this@HomeFragment)
                         .load(randomMeal.strMealThumb)
                         .into(randomMealImageView)
 
-                    // ✅ حساب عدد المكونات
                     val ingredientCount = getIngredientCount(randomMeal)
                     ingredints.text = "$ingredientCount INGREDIENTS"
 
-                    // ✅ تعيين وقت التحضير العشوائي والتقييم العشوائي
-                    val prepTime = (10..60).random() // وقت تحضير عشوائي بين 10 و 60 دقيقة
-                    val rating = (3..5).random() + (0..9).random() / 10f // تقييم عشوائي بين 3.0 و 5.0
+                    val prepTime = (10..60).random() 
+                    val rating = (3..5).random() + (0..9).random() / 10f 
 
                     randomMealTimeTextView.text = "$prepTime min"
                     ratingBar.rating = rating
@@ -165,7 +158,6 @@ class HomeFragment : Fragment() {
                                 return@launch
                             }
 
-                            // ✅ إضافة أو إزالة من المفضلة في قاعدة البيانات المحلية
                             withContext(Dispatchers.IO) {
                                 if (favoriteMealDao.isMealFavorite(randomMeal.idMeal) > 0) {
                                     favoriteMealDao.deleteFavoriteById(randomMeal.idMeal)
@@ -181,7 +173,6 @@ class HomeFragment : Fragment() {
                                 }
                             }
 
-                            // ✅ إضافة أو إزالة من المفضلة في Firestore
                             val firestoreDb = FirebaseFirestore.getInstance()
                             val mealRef = firestoreDb.collection("favorites")
                                 .document(userId)
@@ -193,7 +184,6 @@ class HomeFragment : Fragment() {
                             }
 
                             if (isFavoriteNow) {
-                                // إضافة إلى Firestore
                                 mealRef.set(
                                     mapOf(
                                         "idMeal" to randomMeal.idMeal,
@@ -202,14 +192,13 @@ class HomeFragment : Fragment() {
                                         "userId" to userId
                                     )
                                 ).addOnSuccessListener {
-                                    updateBookmarkIcon(true) // تحديث الأيقونة
+                                    updateBookmarkIcon(true) 
                                 }.addOnFailureListener {
                                     Toast.makeText(requireContext(), "Error saving to Firestore", Toast.LENGTH_SHORT).show()
                                 }
                             } else {
-                                // إزالة من Firestore
                                 mealRef.delete().addOnSuccessListener {
-                                    updateBookmarkIcon(false) // تحديث الأيقونة
+                                    updateBookmarkIcon(false) 
                                 }.addOnFailureListener {
                                     Toast.makeText(requireContext(), "Error removing from Firestore", Toast.LENGTH_SHORT).show()
                                 }
@@ -217,7 +206,6 @@ class HomeFragment : Fragment() {
                         }
                     }
 
-                    // ✅ عند الضغط، تمرير القيم العشوائية لصفحة التفاصيل
                     randomMealIngredients.setOnClickListener {
                         val intent = Intent(requireContext(), MealDetailsActivity::class.java).apply {
                             putExtra("MEAL_ID", randomMeal.idMeal)
@@ -227,7 +215,7 @@ class HomeFragment : Fragment() {
                             putExtra("MEAL_INSTRUCTIONS", randomMeal.strInstructions)
                             putExtra("MEAL_YOUTUBE", randomMeal.strYoutube)
                             putExtra("MEAL_INGREDIENTS", getIngredientsText(randomMeal))
-                            putExtra("MEAL_PREP_TIME", prepTime)  // تمرير وقت التحضير
+                            putExtra("MEAL_PREP_TIME", prepTime)  
                             putExtra("MEAL_RATING", rating)
                         }
                         startActivity(intent)
