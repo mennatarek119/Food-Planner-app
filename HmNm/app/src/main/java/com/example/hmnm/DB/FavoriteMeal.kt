@@ -42,8 +42,8 @@ data class FavoriteMeal(
 @Entity(tableName = "meal_plan")
 data class MealPlan(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val day: String="day", // اليوم الذي أُضيفت فيه الوجبة
-    val mealId: String="mealid", // معرّف الوجبة,
+    val day: String="day", 
+    val mealId: String="mealid", 
     val userId: String="userId",
     val mealName: String="mealName",
     val mealThumb: String="",
