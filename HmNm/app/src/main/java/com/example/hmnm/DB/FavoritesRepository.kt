@@ -37,14 +37,12 @@ class FavoritesRepository(private val db: AppDatabase) {
         }
     }
 
-    // حذف مفضلة من قاعدة البيانات المحلية
     suspend fun deleteFavoriteFromRoom(favoriteMeal: FavoriteMeal) {
         withContext(Dispatchers.IO) {
             db.favoriteDao().deleteFavoriteById(favoriteMeal.idMeal)
         }
     }
 
-    // جلب المفضلات من Firestore
     suspend fun getFavoritesFromFirestore(): List<FavoriteMeal> {
         val userId = auth.currentUser?.uid
         val favoriteMeals = mutableListOf<FavoriteMeal>()
