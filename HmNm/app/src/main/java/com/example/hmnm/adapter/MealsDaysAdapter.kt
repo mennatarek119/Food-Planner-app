@@ -38,7 +38,6 @@ class MealsDaysAdapter(
         fun bind(meal: MealPlan, position: Int, adapter: MealsDaysAdapter) {
             mealTextView.text = meal.mealName
 
-            // تحميل الصورة باستخدام Glide
             Glide.with(itemView.context)
                 .load(meal.mealThumb)
                 .apply(RequestOptions().placeholder(R.drawable.placholder).centerCrop())
@@ -48,40 +47,34 @@ class MealsDaysAdapter(
             val db = AppDatabase.getDatabase(context)
             val favoriteDao = db.favoriteDao()
 
-            // توليد تقييم ووقت تحضير عشوائيين
-            val randomRating = Random.nextFloat() * (5 - 1) + 1 // قيمة بين 1 و 5
-            val randomPrepTime = Random.nextInt(10, 60) // قيمة بين 10 و 60 دقيقة
+            val randomRating = Random.nextFloat() * (5 - 1) + 1 
+            val randomPrepTime = Random.nextInt(10, 60) 
 
-            // تعيين القيم العشوائية في الواجهة
             ratingBar.rating = randomRating
             prepTimeTextView.text = "$randomPrepTime min"
 
-            // التحقق مما إذا كانت الوجبة موجودة في المفضلة
             CoroutineScope(Dispatchers.IO).launch {
                 val isFavLocal = favoriteDao.getFavoriteById(meal.mealId) != null
                 meal.isFavorite = isFavLocal
 
-                // التحقق من الوجبة في Firestore أيضًا
-                val userId = getCurrentUserId() // الحصول على userId من FirebaseAuth
+                val userId = getCurrentUserId() 
                 val favoriteMealRef = FirebaseFirestore.getInstance()
                     .collection("favorites")
                     .document(userId)
                     .collection("meals")
                     .document(meal.mealId)
 
-                // التحقق إذا كانت الوجبة مفضلة في Firestore
                 val isFavFirestore = try {
-                    val docSnapshot = favoriteMealRef.get().await() // انتظار نتيجة Firebase
+                    val docSnapshot = favoriteMealRef.get().await() 
                     docSnapshot.exists()
                 } catch (e: Exception) {
-                    false // في حالة حدوث خطأ، نتعامل مع الحالة على أنها غير مفضلة
+                    false 
                 }
 
-                // تحديث الحالة مع البيانات من Firebase
                 meal.isFavorite = isFavLocal || isFavFirestore
 
                 withContext(Dispatchers.Main) {
-                    // تحديث الأيقونة بناءً على ما إذا كانت الوجبة مفضلة محليًا أو في Firebase
+               
                     favButton.setImageResource(
                         if (meal.isFavorite) R.drawable.ic_bookmarked_foreground else R.drawable.ic_bookmark
                     )
@@ -89,7 +82,6 @@ class MealsDaysAdapter(
             }
 
 
-            // التنقل إلى صفحة تفاصيل الوجبة عند النقر
             itemView.setOnClickListener {
                 val intent = Intent(context, MealDetailsActivity::class.java).apply {
                     putExtra("MEAL_ID", meal.mealId)
@@ -101,12 +93,10 @@ class MealsDaysAdapter(
                 context.startActivity(intent)
             }
 
-            // التعامل مع زر المفضلة
             favButton.setOnClickListener {
                 toggleFavorite(meal, adapter)
             }
 
-            // التعامل مع زر الحذف
             removeButton.setOnClickListener {
                 val builder = android.app.AlertDialog.Builder(itemView.context)
 
@@ -156,7 +146,7 @@ class MealsDaysAdapter(
 
         fun getCurrentUserId(): String {
             val firebaseUser = FirebaseAuth.getInstance().currentUser
-            return firebaseUser?.uid ?: "" // إرجاع userId إذا كان موجودًا، وإلا إرجاع قيمة فارغة
+            return firebaseUser?.uid ?: "" 
         }
 
 
@@ -176,7 +166,6 @@ class MealsDaysAdapter(
                     .document(meal.mealId)
 
                 if (existingFavorite == null) {
-                    // مش موجود في الفيفورت، نضيفه
                     val favorite = FavoriteMeal(
                         idMeal = meal.mealId,
                         strMeal = meal.mealName,
@@ -200,7 +189,6 @@ class MealsDaysAdapter(
                     }
 
                 } else {
-                    // موجود في الفيفورت، نعرض ديالوج للتأكيد
                     withContext(Dispatchers.Main) {
                         val builder = android.app.AlertDialog.Builder(context)
 
@@ -255,7 +243,6 @@ class MealsDaysAdapter(
 
     override fun getItemCount() = meals.size
 
-    // حذف وجبة من القائمة وتحديث العنصر المحذوف
     fun removeMeal(meal: MealPlan) {
         val position = meals.indexOf(meal)
         if (position != -1) {
@@ -264,7 +251,6 @@ class MealsDaysAdapter(
         }
     }
 
-    // تحديث القائمة بالكامل عند الحاجة
     fun updateMeals(newMeals: List<MealPlan>) {
         meals.clear()
         meals.addAll(newMeals)
