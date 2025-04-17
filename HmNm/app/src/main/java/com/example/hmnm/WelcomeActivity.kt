@@ -36,10 +36,8 @@ class WelcomeActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        // Firebase Authentication
         auth = FirebaseAuth.getInstance()
 
-        // Google Sign-In Configuration
         oneTapClient = Identity.getSignInClient(this)
         signInRequest = BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(
@@ -55,7 +53,6 @@ class WelcomeActivity : AppCompatActivity() {
             signInWithGoogle()
         }
 
-        // Facebook Sign-In Configuration
         callbackManager = CallbackManager.Factory.create()
 
         binding.facebookLoginButton.setOnClickListener {
@@ -76,7 +73,6 @@ class WelcomeActivity : AppCompatActivity() {
         }
     }
 
-    // Google Sign-In Function
     private fun signInWithGoogle() {
         oneTapClient.beginSignIn(signInRequest)
             .addOnSuccessListener(this) { result ->
@@ -93,7 +89,6 @@ class WelcomeActivity : AppCompatActivity() {
             }
     }
 
-    // Facebook Token Handling
     private fun handleFacebookAccessToken(token: AccessToken) {
         val credential = FacebookAuthProvider.getCredential(token.token)
         auth.signInWithCredential(credential)
@@ -108,14 +103,11 @@ class WelcomeActivity : AppCompatActivity() {
             }
     }
 
-    // Handling Activity Results
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        // Facebook Login
         callbackManager.onActivityResult(requestCode, resultCode, data)
 
-        // Google Login
         if (requestCode == 1001) {
             val credential = oneTapClient.getSignInCredentialFromIntent(data)
             val idToken = credential?.googleIdToken
@@ -135,7 +127,6 @@ class WelcomeActivity : AppCompatActivity() {
         }
     }
 
-    // Navigation Functions
     fun goToHomeActivity(view: View) {
         FirebaseAuth.getInstance().signOut()
         SharedPrefManager.clearPrefs(this)
