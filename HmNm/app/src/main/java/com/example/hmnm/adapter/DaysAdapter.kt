@@ -14,8 +14,8 @@ import com.example.hmnm.database.entities.MealPlan
 import com.example.hmnm.ui.AllMealsActivity
 
 class DaysAdapter(
-    private val daysList: List<String>, // قائمة الأيام
-    private val mealsListMap: Map<String, List<MealPlan>>, // قائمة الوجبات لكل يوم
+    private val daysList: List<String>, 
+    private val mealsListMap: Map<String, List<MealPlan>>, 
     private val context: Context
 ) : RecyclerView.Adapter<DaysAdapter.DayViewHolder>() {
 
@@ -32,10 +32,9 @@ class DaysAdapter(
                 context.startActivity(intent)
             }
 
-            // إعداد الـ RecyclerView الداخلي
             val mealsAdapter = MealsDaysAdapter(
-                mealsList.toMutableList(), // تحويل القائمة إلى MutableList
-                onRemoveClick = { meal -> /* تنفيذ حذف الوجبة */ },
+                mealsList.toMutableList(), 
+                onRemoveClick = { meal ->  },
             )
             mealsRecyclerView.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -51,7 +50,7 @@ class DaysAdapter(
 
     override fun onBindViewHolder(holder: DayViewHolder, position: Int) {
         val day = daysList[position]
-        val mealsList = mealsListMap[day] ?: emptyList() // جلب الوجبات لهذا اليوم
+        val mealsList = mealsListMap[day] ?: emptyList() 
         holder.bind(day, mealsList, context)
     }
 
