@@ -41,7 +41,6 @@ class CategoryAdapter(
                 .load(category.strCategoryThumb)
                 .into(categoryImageView)
 
-            // عند الضغط على العنصر، يتم إرسال اسم الفئة إلى `onCategoryClick`
             itemView.setOnClickListener {
                 onCategoryClick(category.strCategory)
             }
