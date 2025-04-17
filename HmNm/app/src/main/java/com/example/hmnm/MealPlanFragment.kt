@@ -34,7 +34,6 @@ class MealPlanFragment : Fragment() {
 
         database = AppDatabase.getDatabase(requireContext())
 
-        // تحميل البيانات عند فتح الشاشة
         loadMealsForAllDays()
 
         return view
@@ -42,15 +41,15 @@ class MealPlanFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        loadMealsForAllDays() // إعادة تحميل الوجبات عند الرجوع
+        loadMealsForAllDays() 
     }
 
     private fun getUserId(): String? {
-        return FirebaseAuth.getInstance().currentUser?.uid // جلب userId من Firebase Auth
+        return FirebaseAuth.getInstance().currentUser?.uid 
     }
 
     fun loadMealsForAllDays() {
-        val userId = getUserId() // الحصول على userId من Firebase
+        val userId = getUserId() 
 
         if (userId == null) {
             Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
@@ -58,11 +57,10 @@ class MealPlanFragment : Fragment() {
         }
 
         lifecycleScope.launch {
-            // استرجاع بيانات الوجبات من Firestore
             val mealPlansRef = FirebaseFirestore.getInstance()
-                .collection("mealPlans") // collection التي تحتوي على خطط الوجبات
-                .document(userId) // المستخدم الحالي
-                .collection("plans") // collection الخاصة بالخطط
+                .collection("mealPlans") 
+                .document(userId) 
+                .collection("plans") 
 
             mealPlansRef.get()
                 .addOnSuccessListener { documents ->
@@ -73,19 +71,15 @@ class MealPlanFragment : Fragment() {
                         allMeals.add(mealPlan)
                     }
 
-                    // تجميع الوجبات حسب اليوم
                     val mealsMap = allMeals.groupBy { it.day }
 
-                    // قائمة الأيام
                     val daysList = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
 
-                    // خريطة تحتوي على الأيام بدون بيانات مسبقة (الريسيكلر يبدأ فارغًا)
                     val mealsListMap = mutableMapOf<String, List<MealPlan>>()
                     daysList.forEach { day ->
-                        mealsListMap[day] = mealsMap[day] ?: emptyList() // اجعلها فارغة إذا لم يكن هناك بيانات
+                        mealsListMap[day] = mealsMap[day] ?: emptyList() 
                     }
 
-                    // تحديث RecyclerView
                     adapter = DaysAdapter(daysList, mealsListMap, requireContext())
                     recyclerView.adapter = adapter
                 }
