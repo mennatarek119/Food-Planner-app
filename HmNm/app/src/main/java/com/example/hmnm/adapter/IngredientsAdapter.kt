@@ -12,7 +12,7 @@ import kotlin.random.Random
 
 class IngredientsAdapter(
     private var items: List<Pair<String, String>>,
-    private val onIngredientClick: (String) -> Unit  // تمرير `lambda function` عند الضغط على المكون
+    private val onIngredientClick: (String) -> Unit  
 ) : RecyclerView.Adapter<IngredientsAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -38,16 +38,14 @@ class IngredientsAdapter(
         fun bind(item: Pair<String, String>) {
             ingredientNameTextView.text = item.first
 
-            // تحميل الصورة باستخدام Glide
             Glide.with(ingredientImageView.context)
                 .load(item.second)
-                .placeholder(R.drawable.placholder)  // صورة افتراضية أثناء التحميل
-                .error(R.drawable.placholder)  // صورة افتراضية إذا فشل التحميل
+                .placeholder(R.drawable.placholder)  
+                .error(R.drawable.placholder)  
                 .into(ingredientImageView)
 
-            // عند النقر على المكون، يتم تمرير اسمه
             itemView.setOnClickListener {
-                onIngredientClick(item.first)  // تمرير اسم المكون إلى الـ `listener`
+                onIngredientClick(item.first) 
             }
         }
     }
