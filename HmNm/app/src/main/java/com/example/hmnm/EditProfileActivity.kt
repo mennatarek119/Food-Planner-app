@@ -25,19 +25,15 @@ class EditProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
         supportActionBar?.hide()
 
-        // Initialize Firebase
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        // Connect UI elements
         displayNameEditText = findViewById(R.id.display_name)
         emailEditText = findViewById(R.id.email)
         passwordEditText = findViewById(R.id.password)
 
-        // Load user data
         loadUserData()
 
-        // Save button listener
         val saveButton = findViewById<Button>(R.id.save_button)
         saveButton.setOnClickListener {
             val newPassword = passwordEditText.text.toString().trim()
@@ -50,7 +46,6 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    // Load the user data from Firestore
     private fun loadUserData() {
         val userId = auth.currentUser?.uid
 
@@ -76,7 +71,6 @@ class EditProfileActivity : AppCompatActivity() {
             }
     }
 
-    // Save the updated user data to Firestore and Firebase Auth
     private fun saveUserData(newPassword: String) {
         val userId = auth.currentUser?.uid
 
@@ -88,7 +82,6 @@ class EditProfileActivity : AppCompatActivity() {
         val updatedDisplayName = displayNameEditText.text.toString().trim()
         val updatedEmail = emailEditText.text.toString().trim()
 
-        // Update Firestore data
         val userData = hashMapOf(
             "displayName" to updatedDisplayName,
             "email" to updatedEmail,
@@ -97,7 +90,6 @@ class EditProfileActivity : AppCompatActivity() {
         db.collection("users").document(userId)
             .update(userData as Map<String, Any>)
             .addOnSuccessListener {
-                // If Firestore update is successful, update FirebaseAuth profile
                 updateFirebaseAuthProfile(updatedDisplayName, updatedEmail, newPassword)
             }
             .addOnFailureListener { e ->
@@ -105,7 +97,6 @@ class EditProfileActivity : AppCompatActivity() {
             }
     }
 
-    // Update user profile in FirebaseAuth (displayName, email, and password if provided)
     private fun updateFirebaseAuthProfile(displayName: String, email: String, newPassword: String) {
         val user = auth.currentUser
 
@@ -120,7 +111,6 @@ class EditProfileActivity : AppCompatActivity() {
                         user.updateEmail(email)
                             .addOnCompleteListener { emailTask ->
                                 if (emailTask.isSuccessful) {
-                                    // Optional: Change password if a new one was provided
                                     if (newPassword.isNotEmpty()) {
                                         changeUserPassword(this, newPassword)
                                     } else {
@@ -139,7 +129,6 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    // Update password function
     private fun changeUserPassword(context: Context, newPassword: String) {
         val user = FirebaseAuth.getInstance().currentUser
 
